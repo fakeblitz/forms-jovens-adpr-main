@@ -56,12 +56,12 @@ export const SITE_CONFIG = {
           photo: "/leaders/lider-zumbi.jpeg",
         },
         {
-          name: "Irmã Ladyvania",
+          name: "Missionaria Ladyvania",
           role: "Presidente/Líder de Jovens",
           photo: "/leaders/presidente.jpeg",
         },
         {
-          name: "Irmã Wanessa",
+          name: "Diác. Wanessa",
           role: "Líder de jovens na Master",
           photo: "/leaders/lider-cruz.jpeg",
         },
