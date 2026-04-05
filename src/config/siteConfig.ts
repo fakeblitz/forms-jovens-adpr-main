@@ -64,7 +64,7 @@ export const SITE_CONFIG = {
           photo: "/leaders/lider-cruz.jpeg",
         },
         {
-          name: "Irmã Janaína",
+          name: "Missionaria Janaína",
           role: "Líder de jovens na Master",
           photo: "/leaders/lider-cru.jpeg",
         },
