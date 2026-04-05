@@ -74,7 +74,7 @@ const PaymentSection = () => {
           {/* QR Code placeholder */}
           <div className="w-44 h-44 bg-muted rounded-xl flex items-center justify-center border-2 border-dashed border-border">
             <span className="text-xs text-muted-foreground text-center px-3">
-            <img src="/src/assets/qr code.jpeg" alt="Qr Code" />
+            <img src="../src/assets/qr code.jpeg" alt="Qr Code" />
             </span>
           </div>
 

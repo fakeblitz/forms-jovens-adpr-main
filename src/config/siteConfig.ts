@@ -38,7 +38,7 @@ export const SITE_CONFIG = {
         {
           name: "Pr. Albertino e Pra. Francisca",
           role: "Pastores Presidentes",
-          photo: "/src/assets/pastor1.jpeg",
+          photo: "../src/assets/pastor1.jpeg",
         },
       ],
     },
@@ -48,32 +48,32 @@ export const SITE_CONFIG = {
         {
           name: "Diác. Iracema",
           role: "Líder de Jovens no Vila do Boa",
-          photo: "/src/assets/lider-zumbi.jpeg",
+          photo: "../src/assets/lider-zumbi.jpeg",
         },
         {
           name: "Irmã Ladyvania",
           role: "Presidente/Líder de Jovens",
-          photo: "/src/assets/presidente.jpeg",
+          photo: "../src/assets/presidente.jpeg",
         },
         {
           name: "Irmã Wanessa",
           role: "Líder de jovens na Master",
-          photo: "/src/assets/lider-cruz.jpeg",
+          photo: "../src/assets/lider-cruz.jpeg",
         },
         {
           name: "a",
           role: "Líder de jovens na Master",
-          photo: "/src/assets/lider-cru.jpeg",
+          photo: "../src/assets/lider-cru.jpeg",
         },
         {
           name: "Diác. Fábio",
           role: "Líder de Jovens na Sede",
-          photo: "/src/assets/fabio.jpeg",
+          photo: "../src/assets/fabio.jpeg",
         },
         {
           name: "Diac. Luana",
           role: "Líder de Jovens na Sede",
-          photo: "/src/assets/diac-luana.jpeg",
+          photo: "../src/assets/diac-luana.jpeg",
         },
       ],
     },
@@ -83,12 +83,12 @@ export const SITE_CONFIG = {
     {
       name: "Irmã Ivanildes",
       role: "Tesoureira geral de jovens e adolescentes",
-      photo: "/src/assets/iva.png",
+      photo: "../src/assets/iva.png",
     },
     {
       name: "Irmã Stephanie",
       role: "Secretaria geral de jovens e adolescentes",
-      photo: "/src/assets/ste.png",
+      photo: "../src/assets/ste.png",
     },
   ],
 };
