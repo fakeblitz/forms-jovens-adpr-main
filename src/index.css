@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 240 15% 5%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 12% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 12% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 265 85% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 70% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 10% 18%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 35 95% 55%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 10% 20%;
+    --input: 240 10% 20%;
+    --ring: 265 85% 60%;
+
+    --radius: 0.75rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(265 85% 60%), hsl(220 70% 45%));
+    --gradient-accent: linear-gradient(135deg, hsl(35 95% 55%), hsl(25 90% 50%));
+    --gradient-hero: linear-gradient(180deg, hsla(265, 85%, 20%, 0.9) 0%, hsla(220, 70%, 15%, 0.95) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(240 12% 12%), hsl(240 12% 8%));
+
+    --shadow-glow: 0 0 40px hsla(265, 85%, 60%, 0.3);
+    --shadow-accent: 0 0 30px hsla(35, 95%, 55%, 0.25);
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    --sidebar-background: 240 12% 8%;
+    --sidebar-foreground: 240 5% 65%;
+    --sidebar-primary: 265 85% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 10% 18%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 10% 20%;
+    --sidebar-ring: 265 85% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold px-8 py-4 rounded-xl 
+           transition-all duration-300 hover:scale-105;
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-accent {
+    @apply font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105;
+    background: var(--gradient-accent);
+    color: hsl(var(--accent-foreground));
+    box-shadow: var(--shadow-accent);
+  }
+
+  .btn-outline-light {
+    @apply border-2 font-semibold px-6 py-3 rounded-xl transition-all duration-300
+           hover:scale-105 bg-transparent;
+    border-color: hsla(0, 0%, 100%, 0.3);
+    color: hsl(var(--foreground));
+  }
+
+  .btn-outline-light:hover {
+    border-color: hsla(0, 0%, 100%, 0.6);
+    background: hsla(0, 0%, 100%, 0.05);
+  }
+
+  .btn-whatsapp {
+    @apply flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300 hover:scale-105 text-sm;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+  }
+
+  .glass-card {
+    @apply rounded-2xl p-6 border;
+    background: hsla(240, 12%, 12%, 0.6);
+    backdrop-filter: blur(20px);
+    border-color: hsla(0, 0%, 100%, 0.08);
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+    font-family: var(--font-display);
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl font-light leading-relaxed;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.4s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .form-input {
+    @apply w-full px-4 py-3 rounded-xl border bg-transparent transition-all duration-200 
+           focus:outline-none focus:ring-2 text-sm;
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
+    background: hsl(var(--muted));
+  }
+
+  .form-input:focus {
+    ring-color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+  }
+
+  .form-input::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 3px;
+}
