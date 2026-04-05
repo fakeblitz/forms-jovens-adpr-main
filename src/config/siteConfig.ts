@@ -15,9 +15,7 @@ export const SITE_CONFIG = {
   minAge: 12,
   
   priceTiers: [
-    { minAge: 12, maxAge: 15, price: 150, label: "12 a 15 anos" },
-    { minAge: 16, maxAge: 20, price: 200, label: "16 a 20 anos" },
-    { minAge: 21, maxAge: 99, price: 250, label: "Acima de 21 anos" },
+    { minAge: 12, maxAge: 99, price: 150, label: "12 anos acima" },
   ] as const,
   
   pixKey: "61984624381",
