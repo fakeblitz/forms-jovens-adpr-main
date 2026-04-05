@@ -105,10 +105,9 @@ const HeroSection = ({ vagasRestantes, esgotado }: HeroSectionProps) => {
         >
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="w-4 h-4 text-accent" />
-            <span>{SITE_CONFIG.eventDate}</span>  
+            <span>{SITE_CONFIG.eventDate}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          </div>
+          <div className="hidden sm:block w-1 h-1 rounded-full bg-muted-foreground" />
         </motion.div>
 
         <motion.div

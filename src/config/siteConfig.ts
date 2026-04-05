@@ -15,7 +15,9 @@ export const SITE_CONFIG = {
   minAge: 12,
   
   priceTiers: [
-    { minAge: 12, maxAge: 99, price: 150, label: "12 anos acima" },
+    { minAge: 12, maxAge: 15, price: 150, label: "12 a 15 anos" },
+    { minAge: 16, maxAge: 20, price: 200, label: "16 a 20 anos" },
+    { minAge: 21, maxAge: 99, price: 250, label: "Acima de 21 anos" },
   ] as const,
   
   pixKey: "61984624381",
@@ -28,9 +30,12 @@ export const SITE_CONFIG = {
     { name: "Irmã Ladyvania", phone: "83993832746", role: "Presidente/Lider" },
   ],
   
-  whatsappMessage: "Oi! Estou com dúvidas sobre o Retiro de Jovens.",
+  whatsappMessage: "Oi! Estou com dúvidas sobre o Retiro de Jovens da ADPR.",
   
   // Líderes - casais e irmãs
+  // Para trocar as fotos: substitua os arquivos na pasta public/leaders/
+  // Nomes dos arquivos: pastor.jpg, pastora.jpg, lider-jovens.jpg, lider-jovens-fem.jpg,
+  //                     irma-maria.jpg, irma-ana.jpg, irma-rebeca.jpg
   leaderCouples: [
     {
       label: "Pastores Presidentes",
@@ -42,10 +47,10 @@ export const SITE_CONFIG = {
         },
       ],
     },
+  ],
+
+  leaderSisters: [
     {
-      label: "Líderes de Jovens",
-      members: [
-        {
           name: "Diác. Iracema",
           role: "Líder de Jovens no Vila do Boa",
           photo: "/leaders/lider-zumbi.jpeg",
@@ -75,11 +80,9 @@ export const SITE_CONFIG = {
           role: "Líder de Jovens na Sede",
           photo: "/leaders/diac-luana.jpeg",
         },
-      ],
-    },
   ],
-  
-  leaderSisters: [
+
+  leaderAuxiliares: [
     {
       name: "Irmã Ivanildes",
       role: "Tesoureira geral de jovens e adolescentes",
