@@ -9,7 +9,7 @@ export const useVagas = () => {
   const fetchCount = async () => {
     const { count, error } = await supabase
       .from("inscricoes")
-      .select("*", { count: "exact", head: true });
+      .select("INSERT", { count: "exact", head: true });
     if (!error && count !== null) {
       setTotalInscritos(count);
     }
