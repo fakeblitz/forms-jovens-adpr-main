@@ -9,7 +9,7 @@ export const useVagas = () => {
   const fetchCount = async () => {
     const { count, error } = await supabase
       .from("inscricoes")
-      .select("INSERT", { count: "exact", head: true });
+      .select("*", { count: "exact", head: true });
     if (!error && count !== null) {
       setTotalInscritos(count);
     }
@@ -21,7 +21,7 @@ export const useVagas = () => {
 
     const channel = supabase
       .channel("vagas-counter")
-      .on("postgres_changes", { event: "*", schema: "public", table: "inscricoes" }, () => {
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "inscricoes" }, () => {
         fetchCount();
       })
       .subscribe();
