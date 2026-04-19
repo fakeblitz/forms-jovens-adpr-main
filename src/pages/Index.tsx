@@ -30,13 +30,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <MobileNav />
+      <VagasPopup vagasRestantes={vagasRestantes} esgotado={esgotado} maxVagas={maxVagas} />
       <section id="hero"><HeroSection vagasRestantes={vagasRestantes} esgotado={esgotado}/></section>
       <RevealSection id="about"><AboutSection /></RevealSection>
       <RevealSection id="leaders"><LeadersSection /></RevealSection>
       <RevealSection id="inscricao"><RegistrationSection vagasRestantes={vagasRestantes} esgotado={esgotado} /></RevealSection>
       <RevealSection id="payment"><PaymentSection /></RevealSection>
       <RevealSection id="footer" tag="footer"><FooterSection /></RevealSection>
-      <VagasPopup vagasRestantes={vagasRestantes} esgotado={esgotado} maxVagas={maxVagas} />
+      <FloatingWhatsApp />
     </div>
   );
 };
