@@ -10,27 +10,56 @@ export const useVagas = () => {
     const { count, error } = await supabase
       .from("inscricoes")
       .select("*", { count: "exact", head: true });
+
     if (!error && count !== null) {
       setTotalInscritos(count);
     }
-    setLoading(false);
+    // Só desativa o loading na primeira vez
+    if (loading) setLoading(false);
   };
 
   useEffect(() => {
+    // Busca inicial
     fetchCount();
 
+    // ✅ Realtime (mantido)
     const channel = supabase
       .channel("vagas-counter")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "inscricoes" }, () => {
-        fetchCount();
-      })
-      .subscribe();
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "inscricoes" },
+        () => {
+          fetchCount();
+        }
+      )
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          console.log("✅ Realtime vagas conectado");
+        }
+      });
 
-    return () => { supabase.removeChannel(channel); };
-  }, []);
+    // ✅ POLLING (a cada 10 segundos) - solução confiável para público
+    const interval = setInterval(() => {
+      fetchCount();
+    }, 10000);
 
-  const vagasRestantes = totalInscritos !== null ? Math.max(0, SITE_CONFIG.maxVagas - totalInscritos) : null;
+    return () => {
+      clearInterval(interval);
+      supabase.removeChannel(channel);
+    };
+  }, [loading]);
+
+  const vagasRestantes = totalInscritos !== null 
+    ? Math.max(0, SITE_CONFIG.maxVagas - totalInscritos) 
+    : null;
+
   const esgotado = vagasRestantes !== null && vagasRestantes <= 0;
 
-  return { totalInscritos, vagasRestantes, esgotado, loading, maxVagas: SITE_CONFIG.maxVagas };
+  return { 
+    totalInscritos, 
+    vagasRestantes, 
+    esgotado, 
+    loading, 
+    maxVagas: SITE_CONFIG.maxVagas 
+  };
 };

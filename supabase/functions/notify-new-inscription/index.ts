@@ -44,9 +44,9 @@ Deno.serve(async (req) => {
 
     // The sisters' phone numbers from the config
     const sisters = [
-      { name: "Irmã Maria", phone: "5511999999991" },
-      { name: "Irmã Ana", phone: "5511999999992" },
-      { name: "Irmã Rebeca", phone: "5511999999993" },
+      { name: "Irmã Ivanildes", phone: "61984624381" },
+      { name: "Irmã Stephanie", phone: "61998762089" },
+      { name: "Irmã Ladyvania", phone: "83993832746" },
     ];
 
     // Generate WhatsApp links for each sister
