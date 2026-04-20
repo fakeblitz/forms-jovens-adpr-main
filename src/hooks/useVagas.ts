@@ -7,41 +7,44 @@ export const useVagas = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchCount = async () => {
-    const { count, error } = await supabase
-      .from("inscricoes")
-      .select("*", { count: "exact", head: true });
+    // ✅ RPC com type assertion (corrige o erro de TypeScript)
+    const { data: count, error } = await supabase.rpc(
+      "get_inscricoes_count"
+    ) as any;
 
-    if (!error && count !== null) {
+    if (error) {
+      console.warn("⚠️ Erro ao buscar contagem de vagas:", error.message);
+    } else if (count !== null) {
       setTotalInscritos(count);
     }
-    // Só desativa o loading na primeira vez
+
     if (loading) setLoading(false);
   };
 
   useEffect(() => {
-    // Busca inicial
     fetchCount();
 
-    // ✅ Realtime (mantido)
+    // Realtime
     const channel = supabase
       .channel("vagas-counter")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "inscricoes" },
+        { event: "INSERT", schema: "public", table: "inscricoes" },
         () => {
+          console.log("🔄 Nova inscrição detectada via realtime");
           fetchCount();
         }
       )
       .subscribe((status) => {
         if (status === "SUBSCRIBED") {
           console.log("✅ Realtime vagas conectado");
+        } else if (status === "CHANNEL_ERROR") {
+          console.warn("⚠️ Realtime falhou");
         }
       });
 
-    // ✅ POLLING (a cada 10 segundos) - solução confiável para público
-    const interval = setInterval(() => {
-      fetchCount();
-    }, 10000);
+    // Polling de segurança
+    const interval = setInterval(fetchCount, 8000);
 
     return () => {
       clearInterval(interval);
@@ -49,17 +52,17 @@ export const useVagas = () => {
     };
   }, [loading]);
 
-  const vagasRestantes = totalInscritos !== null 
-    ? Math.max(0, SITE_CONFIG.maxVagas - totalInscritos) 
-    : null;
+  const vagasRestantes = totalInscritos !== null
+    ? Math.max(0, SITE_CONFIG.maxVagas - totalInscritos)
+    : SITE_CONFIG.maxVagas;
 
-  const esgotado = vagasRestantes !== null && vagasRestantes <= 0;
+  const esgotado = vagasRestantes <= 0;
 
-  return { 
-    totalInscritos, 
-    vagasRestantes, 
-    esgotado, 
-    loading, 
-    maxVagas: SITE_CONFIG.maxVagas 
+  return {
+    totalInscritos,
+    vagasRestantes,
+    esgotado,
+    loading,
+    maxVagas: SITE_CONFIG.maxVagas,
   };
 };
