@@ -27,7 +27,7 @@ export const useVagas = () => {
       .channel("vagas-counter")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "inscricoes" },
+        { event: "*", schema: "public", table: "inscricoes" },
         () => {
           fetchCount();
         }
