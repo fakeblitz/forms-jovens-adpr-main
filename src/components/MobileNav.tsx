@@ -51,7 +51,7 @@ const MobileNav = () => {
             onClick={goToAdmin}
             className="text-left text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors py-1"
           >
-            Irmãs
+            Coordenadoras
           </button>
         </div>
       )}
