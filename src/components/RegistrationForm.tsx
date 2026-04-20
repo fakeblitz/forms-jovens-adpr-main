@@ -104,6 +104,7 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
     else if (step > 0) setStep((prev) => prev - 1);
   };
 
+  // ==================== SUBMIT CORRIGIDO ====================
   const onSubmit = async (data: FormData) => {
     if (!price) return;
     setIsSubmitting(true);
@@ -128,7 +129,8 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
 
       if (error) throw error;
 
-      supabase.functions.invoke("notify-new-inscription", {
+      // Chama a Edge Function e abre os WhatsApps automaticamente
+      const { data: notificationData } = await supabase.functions.invoke("notify-new-inscription", {
         body: {
           nome: data.nomeCompleto,
           idade: Number(data.idade),
@@ -137,7 +139,14 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
           valor: price,
           isMembro: data.isMembro === "sim",
         },
-      }).catch(console.error);
+      });
+
+      // Abre os links do WhatsApp das irmãs
+      if (notificationData?.whatsappLinks) {
+        notificationData.whatsappLinks.forEach((item: any) => {
+          window.open(item.link, "_blank");
+        });
+      }
 
       setSubmitted(true);
       onSuccess({ ...data, valor: price });
@@ -148,6 +157,7 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
       setIsSubmitting(false);
     }
   };
+  // ========================================================
 
   if (submitted) {
     return (
@@ -222,9 +232,8 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
         ))}
       </div>
 
-      {/* Steps com key para evitar bugs de re-render no mobile */}
       <div key={step}>
-        {/* Step 0 - Dados Pessoais */}
+        {/* Step 0 */}
         {step === 0 && (
           <div className="flex flex-col gap-3 animate-fade-in-up">
             <div>
@@ -257,12 +266,19 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Alguma doença, alergia ou intolerância?</label>
-              <textarea {...register("saudeObs")} className="form-input min-h-[70px] resize-none" placeholder="Descreva aqui se houver..." />
+              <textarea
+                {...register("saudeObs")}
+                className="form-input min-h-[70px] resize-none"
+                placeholder="Descreva aqui se houver..."
+                autoComplete="off"
+                spellCheck="false"
+                data-form-type="other"
+              />
             </div>
           </div>
         )}
 
-        {/* Step 1 - Contato de Emergência */}
+        {/* Step 1 */}
         {step === 1 && (
           <div className="flex flex-col gap-3 animate-fade-in-up">
             <p className="text-xs text-muted-foreground mb-1">Informe um contato para emergências durante o retiro.</p>
@@ -292,7 +308,7 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
           </div>
         )}
 
-        {/* Step 2 - Membresia */}
+        {/* Step 2 */}
         {step === 2 && (
           <div className="flex flex-col gap-3 animate-fade-in-up">
             <p className="text-xs text-muted-foreground mb-1">Você é membro da {SITE_CONFIG.churchName}?</p>
@@ -309,7 +325,7 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
             {errors.isMembro && <p className="text-xs text-destructive mt-1">{errors.isMembro.message}</p>}
 
             {isMembro === "nao" && (
-              <div className="animate-fade-in-up">
+              <div>
                 <label className="text-xs font-medium text-muted-foreground mb-1 block">Qual igreja você frequenta? (opcional)</label>
                 <input {...register("igrejaVisitante")} className="form-input" placeholder="Nome da sua igreja" />
               </div>
@@ -317,7 +333,7 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
           </div>
         )}
 
-        {/* Step 3 - Endereço */}
+        {/* Step 3 */}
         {step === 3 && (
           <div className="flex flex-col gap-3 animate-fade-in-up">
             <div className="flex flex-col items-center gap-2 mb-2">
@@ -325,7 +341,6 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
               <h3 className="font-display font-bold text-lg text-foreground">Endereço</h3>
               <p className="text-xs text-muted-foreground text-center">Precisamos do seu endereço para eventuais comunicações</p>
             </div>
-
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Endereço Completo *</label>
               <input {...register("endereco")} className="form-input" placeholder="Rua, número, complemento" />
@@ -356,7 +371,7 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
               <div>
                 <p className="text-xs font-semibold text-foreground">Privacidade Garantida</p>
                 <p className="text-[10px] text-muted-foreground leading-relaxed mt-1">
-                  Suas informações pessoais são mantidas em total privacidade e usadas apenas para comunicações relacionadas ao retiro.
+                  Suas informações pessoais são mantidas em total privacidade.
                 </p>
               </div>
             </div>
@@ -364,7 +379,7 @@ const RegistrationForm = ({ onSuccess }: RegistrationFormProps) => {
         )}
       </div>
 
-      {/* Navigation buttons */}
+      {/* Navigation */}
       <div className="flex gap-3 mt-2">
         {step > 0 && (
           <button type="button" onClick={prevStep} className="btn-outline-light flex items-center gap-1 text-sm px-4 py-3">

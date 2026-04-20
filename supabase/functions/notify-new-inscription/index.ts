@@ -3,8 +3,9 @@ import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  "Access-Control-Max-Age": "600", // cache do preflight por 10 minutos
 };
 
 const BodySchema = z.object({
@@ -17,8 +18,12 @@ const BodySchema = z.object({
 });
 
 Deno.serve(async (req) => {
+  // ✅ Tratamento correto do preflight OPTIONS
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { 
+      status: 204, 
+      headers: corsHeaders 
+    });
   }
 
   try {
@@ -32,7 +37,6 @@ Deno.serve(async (req) => {
 
     const { nome, idade, email, telefone, valor, isMembro } = parsed.data;
 
-    // Build WhatsApp notification message
     const message = `🔔 *Nova Inscrição no Retiro!*\n\n` +
       `👤 *Nome:* ${nome}\n` +
       `🎂 *Idade:* ${idade} anos\n` +
@@ -42,24 +46,21 @@ Deno.serve(async (req) => {
       `⛪ *Membro:* ${isMembro ? "Sim" : "Não (visitante)"}\n\n` +
       `✅ Acesse o painel admin para mais detalhes.`;
 
-    // The sisters' phone numbers from the config
     const sisters = [
       { name: "Irmã Ivanildes", phone: "61984624381" },
       { name: "Irmã Stephanie", phone: "61998762089" },
       { name: "Irmã Ladyvania", phone: "83993832746" },
     ];
 
-    // Generate WhatsApp links for each sister
     const whatsappLinks = sisters.map((s) => ({
       name: s.name,
       link: `https://wa.me/${s.phone}?text=${encodeURIComponent(message)}`,
     }));
 
-    // Log the notification (in production, this could trigger actual notifications)
-    console.log("New inscription notification prepared for sisters:", whatsappLinks);
+    console.log("Nova inscrição notificada:", whatsappLinks);
 
     return new Response(
-      JSON.stringify({ success: true, message: "Notification prepared", whatsappLinks }),
+      JSON.stringify({ success: true, whatsappLinks }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {

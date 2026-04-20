@@ -7,10 +7,7 @@ export const useVagas = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchCount = async () => {
-    // ✅ RPC com type assertion (corrige o erro de TypeScript)
-    const { data: count, error } = await supabase.rpc(
-      "get_inscricoes_count"
-    ) as any;
+    const { data: count, error } = await supabase.rpc("get_inscricoes_count") as any;
 
     if (error) {
       console.warn("⚠️ Erro ao buscar contagem de vagas:", error.message);
@@ -24,7 +21,6 @@ export const useVagas = () => {
   useEffect(() => {
     fetchCount();
 
-    // Realtime
     const channel = supabase
       .channel("vagas-counter")
       .on(
@@ -35,15 +31,8 @@ export const useVagas = () => {
           fetchCount();
         }
       )
-      .subscribe((status) => {
-        if (status === "SUBSCRIBED") {
-          console.log("✅ Realtime vagas conectado");
-        } else if (status === "CHANNEL_ERROR") {
-          console.warn("⚠️ Realtime falhou");
-        }
-      });
+      .subscribe();
 
-    // Polling de segurança
     const interval = setInterval(fetchCount, 8000);
 
     return () => {
@@ -58,11 +47,5 @@ export const useVagas = () => {
 
   const esgotado = vagasRestantes <= 0;
 
-  return {
-    totalInscritos,
-    vagasRestantes,
-    esgotado,
-    loading,
-    maxVagas: SITE_CONFIG.maxVagas,
-  };
+  return { totalInscritos, vagasRestantes, esgotado, loading, maxVagas: SITE_CONFIG.maxVagas };
 };
